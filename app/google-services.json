@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "601075166083",
+    "firebase_url": "https://espressgo-e31b4.firebaseio.com",
+    "project_id": "espressgo-e31b4",
+    "storage_bucket": "espressgo-e31b4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:601075166083:android:6b1a1cea57f446b62364b6",
+        "android_client_info": {
+          "package_name": "com.example.espressgo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "601075166083-6n46di168gna5e98p803nu6as2fnibhl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7Ic37diXxaQ3jql84hsWvmbLx8zAXrs4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "601075166083-6n46di168gna5e98p803nu6as2fnibhl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
