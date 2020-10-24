@@ -9,17 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginView"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".CreateUserView"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".HomeScreen"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".LoginView"
+            android:theme="@style/AppTheme.NoActionBarOpening" />
+        <activity
+            android:name=".CreateUserView"
+            android:theme="@style/AppTheme.NoActionBarOpening" />
+        <activity
+            android:name=".HomeScreen"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".OpeningScreen"
             android:label="Percolate PGH"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBarOpening">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
