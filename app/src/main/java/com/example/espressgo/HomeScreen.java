@@ -1,5 +1,6 @@
 package com.example.espressgo;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -15,7 +16,8 @@ import android.widget.Toast;
 
 public class HomeScreen extends AppCompatActivity {
     private DrawerLayout drawer;
-
+    private FirebaseAuth mAuth;
+    FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
