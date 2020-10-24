@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 public class HomeScreen extends AppCompatActivity {
     private DrawerLayout drawer;
-    private FirebaseAuth mAuth;
     FirebaseUser currentUser;
 
     @Override
@@ -24,7 +23,7 @@ public class HomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         //this is the user currently logged in, in firebase. we will prob have a user of our own model later
         currentUser = mAuth.getCurrentUser();
