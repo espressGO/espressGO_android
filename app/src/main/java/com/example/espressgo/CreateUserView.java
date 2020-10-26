@@ -24,6 +24,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.os.StrictMode;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 
 import android.view.Menu;
@@ -75,14 +76,24 @@ public class CreateUserView extends AppCompatActivity {
         createUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                boolean goodEmail = verifyEmail(etEmail.getEditableText().toString());
+                if(!goodEmail) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "E-mail must be valid", Toast.LENGTH_SHORT);
+                    toast.show();
+                    return;
+                }
                 boolean goodPassword = verifyPassword(etPassword1.getEditableText().toString(),etPassword2.getEditableText().toString());
-                if(goodPassword) {
+                if(goodPassword ) {
                     createUser(etEmail.getEditableText().toString(), "", etPassword1.getEditableText().toString());
                     createActivity();
                 }
 
             }
         });
+    }
+
+    private boolean verifyEmail(String toString) {
+        return Patterns.EMAIL_ADDRESS.matcher(toString).matches();
     }
 
     @Override
