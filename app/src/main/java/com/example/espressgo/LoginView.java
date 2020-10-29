@@ -38,12 +38,12 @@ public class LoginView extends AppCompatActivity{
 
         setContentView(R.layout.activity_login);
 
-        tvUsername = (TextView) findViewById(R.id.tvUsername);
-        tvPassword = (TextView) findViewById(R.id.tvPassword);
-        edEmail = (EditText) findViewById(R.id.edEmail);
-        edPassword = (EditText) findViewById(R.id.edPassword);
+        tvUsername = findViewById(R.id.tvUsername);
+        tvPassword = findViewById(R.id.tvPassword);
+        edEmail = findViewById(R.id.edEmail);
+        edPassword = findViewById(R.id.edPassword);
 
-        btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnLogin = findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
