@@ -7,8 +7,8 @@ repositories {
         name = "GitHubPackages"
         url = uri("https://maven.pkg.github.com/espressGO/espressgo_models")
         credentials {
-            username = "dmurphgarrett"
-            password = "ac94b45d5311717c8d1b3584e9c088e8bf731520"
+            username = "KyleMaxwell1224"
+            password = "19dfde648b25c00a77e130e0fb062b31f969330b"
         }
     }
 }
@@ -45,10 +45,13 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
 
     //Custom models
-    implementation ('com.espressgo.models:espressgo_models:1.3') {
+    implementation ('com.espressgo.models:espressgo_models:1.31') {
         exclude group: 'org.springframework.boot'
     }
+    implementation'com.google.code.gson:gson:2.8.5'
+
     //Android dependencies
+    implementation 'com.android.volley:volley:1.1.1'
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
