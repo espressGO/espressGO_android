@@ -7,8 +7,8 @@ repositories {
         name = "GitHubPackages"
         url = uri("https://maven.pkg.github.com/espressGO/espressgo_models")
         credentials {
-            username = "KyleMaxwell1224"
-            password = "19dfde648b25c00a77e130e0fb062b31f969330b"
+            username = "dmurphgarrett"
+            password = "000f5131a0b139f2afbd4a47ca490bfcebbaed25"
         }
     }
 }
@@ -24,7 +24,7 @@ android {
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
-        versionName "1.31"
+        versionName "1.40" //1.40
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -41,11 +41,11 @@ dependencies {
     //Firebase modules
     implementation platform('com.google.firebase:firebase-bom:25.12.0')
     implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.google.firebase:firebase-auth:19.4.0'
+    implementation 'com.google.firebase:firebase-auth:20.0.0'
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
 
     //Custom models
-    implementation ('com.espressgo.models:espressgo_models:1.31') {
+    implementation ('com.espressgo.models:espressgo_models:1.40') { //1.40
         exclude group: 'org.springframework.boot'
     }
     implementation'com.google.code.gson:gson:2.8.5'
@@ -55,7 +55,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.navigation:navigation-fragment:2.3.1'
     implementation 'androidx.navigation:navigation-ui:2.3.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
