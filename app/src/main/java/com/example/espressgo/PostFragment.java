@@ -44,7 +44,7 @@ public class PostFragment extends Fragment implements View.OnClickListener{
         etComment = requireView().findViewById(R.id.etComment);
         ratingBar = requireView().findViewById(R.id.ratingBar);
         createPostButton = requireView().findViewById(R.id.createPostButton);
-        createPostButton.setOnClickListener((View.OnClickListener) this);
+        createPostButton.setOnClickListener(this);
     }
 
     @Override

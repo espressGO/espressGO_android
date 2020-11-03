@@ -19,11 +19,11 @@
 
     <TextView
         android:id="@+id/tvEnter"
-        android:layout_width="157dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="124dp"
-        android:layout_marginTop="160dp"
-        android:text="Enter a Shop or a Drink:"
+        android:layout_width="175dp"
+        android:layout_height="77dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="116dp"
+        android:text="Enter a Shop or a Drink or a User's Email:"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSearch" />

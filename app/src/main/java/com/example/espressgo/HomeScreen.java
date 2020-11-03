@@ -72,6 +72,8 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
             case R.id.nav_logout:
                 logOut();
                 break;
+            default:
+                break;
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
