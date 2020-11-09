@@ -57,7 +57,7 @@ public class CreateUserView extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     //CHANGE THIS VALUE TO YOUR LOCAL IP. IF USING WINDOWS, USE IPCONFIG. LINUX, USE IP A
-    public final String localIp = "192.168.1.7:8080";
+    public final String localIp = "192.168.1.191:8080";
     public final String http = "http://";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,16 +155,18 @@ public class CreateUserView extends AppCompatActivity {
             URL requestUrl = new URL(apiUrl);
             urlConnection = (HttpURLConnection) requestUrl.openConnection();
             urlConnection.setRequestProperty("Content-Type", "application/json; utf-8");
-            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestMethod("POST"); //get
             urlConnection.setRequestProperty("Accept", "application/json");
             urlConnection.setDoOutput(true);
             Gson gson = new Gson();
             String jsonInputString = gson.toJson(newUser);
+            //Sends to api
             try(OutputStream os = urlConnection.getOutputStream()) {
                 byte[] input = jsonInputString.getBytes("utf-8");
                 os.write(input, 0, input.length);
             }
             Log.d(TAG,"CONNECTION MADE IT THIS FAR");
+            //Response
             try(BufferedReader br = new BufferedReader(
                     new InputStreamReader(urlConnection.getInputStream(), "utf-8"))) {
                 StringBuilder response = new StringBuilder();
@@ -175,6 +177,7 @@ public class CreateUserView extends AppCompatActivity {
                 System.out.println(response.toString());
             }
         } catch (Exception e) {
+            Log.d(TAG,"Catching an error here");
             e.printStackTrace();
         } finally {
             urlConnection.disconnect();
