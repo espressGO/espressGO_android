@@ -1,5 +1,7 @@
 package com.example.espressgo;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -19,6 +21,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
+
+import org.bson.types.ObjectId;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -87,11 +91,12 @@ public class PostFragment extends Fragment implements View.OnClickListener{
     }
 
     private void createPost(String shop, String drink, String comment) {
+        SharedPreferences sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE);
         StringBuilder result = new StringBuilder();
         HttpURLConnection urlConnection = null;
         String endpoint = "/user";
         Message newMessage = new Message();
-//        newMessage.setUserId();
+        newMessage.setUserId(new ObjectId(Objects.requireNonNull(sharedPreferences.getString("userID", ""))));
 //        newMessage.setShopId();
 //        newMessage.setDrinkId();
 //        newMessage.setRating();

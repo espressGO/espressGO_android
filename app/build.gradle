@@ -8,7 +8,7 @@ repositories {
         url = uri("https://maven.pkg.github.com/espressGO/espressgo_models")
         credentials {
             username = "dmurphgarrett"
-            password = "e98353f9c331dc38c619b7c77bd299fd368d4632"
+            password = "db4fcb4c84e40e12af39195a7625a480b482f6a9"
         }
     }
 }
@@ -24,7 +24,7 @@ android {
         minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
-        versionName "1.40" //1.40
+        versionName "1.45" //1.40
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -46,7 +46,7 @@ dependencies {
 
 
     //Custom models
-    implementation ('com.espressgo.models:espressgo_models:1.40') { //1.40
+    implementation ('com.espressgo.models:espressgo_models:1.45') { //1.40
         exclude group: 'org.springframework.boot'
     }
     implementation'com.google.code.gson:gson:2.8.5'

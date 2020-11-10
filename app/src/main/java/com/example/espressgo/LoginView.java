@@ -1,6 +1,8 @@
 package com.example.espressgo;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 //import android.graphics.Color;
@@ -35,6 +37,8 @@ import models.User;
 
 public class LoginView extends AppCompatActivity{
     private static final String TAG = "LoginView" ;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     EditText edEmail, edPassword;
     TextView tvUsername, tvPassword;
@@ -52,6 +56,8 @@ public class LoginView extends AppCompatActivity{
         mAuth = FirebaseAuth.getInstance();
 
         setContentView(R.layout.activity_login);
+
+
 
         tvUsername = findViewById(R.id.tvUsername);
         tvPassword = findViewById(R.id.tvPassword);
@@ -137,7 +143,20 @@ public class LoginView extends AppCompatActivity{
         }
         Log.d(TAG, "Right before printing the User");
         Log.d(TAG, result.toString());
-
+        Gson gson = new Gson();
+        User current = gson.fromJson(result.toString(), User.class);
+        sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        editor.putString("jsonUser",result.toString());
+        editor.putString("email",current.getEmail());
+        editor.putString("userID", current.getId().toString());
+        Log.d(TAG,current.getEmail());
+        Log.d(TAG, current.getId().toString());
+        editor.apply();
+        /*
+        *   SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        *   String userName = sharedPref.getString("userName", defaultValue)
+        * */
     }
 
     public void checkSignIn(String email, String password)
