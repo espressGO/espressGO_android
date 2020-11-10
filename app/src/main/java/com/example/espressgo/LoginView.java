@@ -87,7 +87,12 @@ public class LoginView extends AppCompatActivity{
         if(currentUser!= null) {
             Log.d(TAG, "User found at start, proceed");
             updateUI(currentUser);
-            getUser(currentUser);
+            int SDK_INT = Build.VERSION.SDK_INT;
+            if (SDK_INT > 8) {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+                getUser(currentUser);
+            }
             homeActivity();
         }
 
@@ -96,14 +101,14 @@ public class LoginView extends AppCompatActivity{
     private void getUser(FirebaseUser currentUser) {
         StringBuilder result = new StringBuilder();
         HttpURLConnection urlConnection = null;
-        String endpoint = "/user";
+        String endpoint = "/findUser";
 
         try {
             String apiUrl = (http+localIp+endpoint);
             URL requestUrl = new URL(apiUrl);
             urlConnection = (HttpURLConnection) requestUrl.openConnection();
             urlConnection.setRequestProperty("Content-Type", "application/json; utf-8");
-            urlConnection.setRequestMethod("GET"); //get
+            urlConnection.setRequestMethod("POST"); //get
             urlConnection.setRequestProperty("Accept", "application/json");
             urlConnection.setDoOutput(true);
             Gson gson = new Gson();
@@ -121,7 +126,7 @@ public class LoginView extends AppCompatActivity{
                 while ((responseLine = br.readLine()) != null) {
                     result.append(responseLine.trim());
                 }
-                System.out.println(result.toString());
+
             }
         } catch (Exception e) {
             Log.d(TAG,"Catching an error here");
@@ -130,6 +135,7 @@ public class LoginView extends AppCompatActivity{
             assert urlConnection != null;
             urlConnection.disconnect();
         }
+        Log.d(TAG, "Right before printing the User");
         Log.d(TAG, result.toString());
 
     }
