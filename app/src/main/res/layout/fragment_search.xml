@@ -23,7 +23,7 @@
         android:layout_height="77dp"
         android:layout_marginStart="116dp"
         android:layout_marginTop="116dp"
-        android:text="Enter a Shop or a Drink or a User's Email:"
+        android:text="Enter a Shop or a User's Email:"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSearch" />

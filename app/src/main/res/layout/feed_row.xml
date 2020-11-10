@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="5dip"
+    android:background="@color/colorPrimary">
+    <TextView
+        android:id="@+id/tvEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:paddingEnd="5dp"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/tvShop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/tvEmail"
+        android:textSize="17sp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/tvDrink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/tvShop"
+        android:textSize="17sp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/tvComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvEmail"
+        android:textSize="14sp"
+        android:layout_marginTop="1dp" />
+</RelativeLayout>

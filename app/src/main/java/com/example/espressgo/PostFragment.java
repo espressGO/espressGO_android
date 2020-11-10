@@ -1,7 +1,10 @@
 package com.example.espressgo;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +18,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+
+import models.Message;
 
 public class PostFragment extends Fragment implements View.OnClickListener{
     TextView tvTitle, tvShop, tvDrink, tvRating, tvComment;
@@ -23,6 +36,8 @@ public class PostFragment extends Fragment implements View.OnClickListener{
     RatingBar ratingBar;
     Button createPostButton;
 
+    public final String localIp = "192.168.1.191:8080";
+    public final String http = "http://";
 
     @Nullable
     @Override
@@ -63,14 +78,53 @@ public class PostFragment extends Fragment implements View.OnClickListener{
             return;
         }
 
-        //Shops shop = searchForShop((CharSequence) etShop);
-//        if (TextUtils.isEmpty((CharSequence) etShop)) {
-//            //drink is empty, post the comment here without a drink
-//        }
-//        else {
-//            //Drinks drink = searchForDrink((CharSequence) etDrink)
-//            //make post here with a drink
-//        }
+        int SDK_INT = Build.VERSION.SDK_INT;
+        if (SDK_INT > 8) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            createPost(etShop.toString(),etDrink.toString(),etComment.toString());
+        }
+    }
 
+    private void createPost(String shop, String drink, String comment) {
+        StringBuilder result = new StringBuilder();
+        HttpURLConnection urlConnection = null;
+        String endpoint = "/user";
+        Message newMessage = new Message();
+//        newMessage.setUserId();
+//        newMessage.setShopId();
+//        newMessage.setDrinkId();
+//        newMessage.setRating();
+        newMessage.setComment(comment);
+        try {
+            String apiUrl = (http+localIp+endpoint);
+            URL requestUrl = new URL(apiUrl);
+            urlConnection = (HttpURLConnection) requestUrl.openConnection();
+            urlConnection.setRequestProperty("Content-Type", "application/json; utf-8");
+            urlConnection.setRequestMethod("POST"); //get
+            urlConnection.setRequestProperty("Accept", "application/json");
+            urlConnection.setDoOutput(true);
+            Gson gson = new Gson();
+            String jsonInputString = gson.toJson(newMessage);
+            //Sends to api
+            try(OutputStream os = urlConnection.getOutputStream()) {
+                byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+            //Response
+            try(BufferedReader br = new BufferedReader(
+                    new InputStreamReader(urlConnection.getInputStream(), StandardCharsets.UTF_8))) {
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    result.append(responseLine.trim());
+                }
+                System.out.println(result.toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            assert urlConnection != null;
+            urlConnection.disconnect();
+        }
     }
 }

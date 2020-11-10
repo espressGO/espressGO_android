@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 public class SearchFragment extends Fragment implements View.OnClickListener{
 
@@ -39,13 +41,12 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         //make sure search bar isn't empty, then do the search
-        if (TextUtils.isEmpty((CharSequence) etSearch)) {
+        if (TextUtils.isEmpty(etSearch.toString())) {
             Toast.makeText(getActivity(), "Search is empty. Please enter what you wish to search.", Toast.LENGTH_LONG).show();
             return;
         }
         //do search here, then move to the search_results fragment
-
-
+        getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchResultsFragment()).commit();
 
     }
 }
