@@ -47,7 +47,7 @@ public class LoginView extends AppCompatActivity{
 
     private FirebaseAuth mAuth;
 
-    public final String localIp = "192.168.1.191:8080";
+    public final String localIp = "192.168.1.7:8080";
     public final String http = "http://";
 
     @Override
@@ -91,6 +91,11 @@ public class LoginView extends AppCompatActivity{
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser!= null) {
+            FirebaseAuth.getInstance().signOut();
+            Intent home = new Intent(this, OpeningScreen.class);
+            startActivity(home);
+            Toast loggedOut = Toast.makeText(getApplicationContext(), "Logged out!", Toast.LENGTH_LONG);
+            loggedOut.show();
             Log.d(TAG, "User found at start, proceed");
             updateUI(currentUser);
             int SDK_INT = Build.VERSION.SDK_INT;
@@ -145,9 +150,10 @@ public class LoginView extends AppCompatActivity{
         Log.d(TAG, result.toString());
         Gson gson = new Gson();
         User current = gson.fromJson(result.toString(), User.class);
-        sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("espressGO", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
         editor.putString("jsonUser",result.toString());
+
         editor.putString("email",current.getEmail());
         editor.putString("userID", current.getId().toString());
         Log.d(TAG,current.getEmail());

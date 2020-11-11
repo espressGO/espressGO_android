@@ -33,14 +33,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import models.Message;
+import models.Shop;
+import models.User;
 
 public class PostFragment extends Fragment implements View.OnClickListener{
     TextView tvTitle, tvShop, tvDrink, tvRating, tvComment;
     EditText etShop, etDrink, etComment;
     RatingBar ratingBar;
     Button createPostButton;
+    private static final String TAG = "PostFragment" ;
+    SharedPreferences sharedPreferences;
 
-    public final String localIp = "192.168.1.191:8080";
+    public final String localIp = "192.168.1.7:8080";
     public final String http = "http://";
 
     @Nullable
@@ -73,7 +77,7 @@ public class PostFragment extends Fragment implements View.OnClickListener{
         //etDrink can be empty if it is a shop rating, but if it isn't empty check if it exists
         //Make sure etComment isn't empty
         //Once this is done, create a new post variable and add it to the database!
-        if (TextUtils.isEmpty((CharSequence) etShop)) {
+/*        if (TextUtils.isEmpty((CharSequence) etShop)) {
             Toast.makeText(getActivity(), "Shop is empty. Please re-enter the shop you wish to review.", Toast.LENGTH_LONG).show();
             return;
         }
@@ -81,25 +85,35 @@ public class PostFragment extends Fragment implements View.OnClickListener{
             Toast.makeText(getActivity(), "Comment is empty. Please re-enter the comment you wish to post.", Toast.LENGTH_LONG).show();
             return;
         }
-
+*/
         int SDK_INT = Build.VERSION.SDK_INT;
         if (SDK_INT > 8) {
+
+            SharedPreferences preferences = getActivity().getSharedPreferences("espressGO", Context.MODE_PRIVATE);
+            String userId = preferences.getString("email", "");
+            Log.d(TAG, userId);
+
+            ObjectId shopId = getShopId(etShop.getEditableText().toString());
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
-            createPost(etShop.toString(),etDrink.toString(),etComment.toString());
+            Log.d(TAG, shopId.toString());
+            if(shopId != null && userId != null)
+                createPost(shopId,etDrink.getEditableText().toString(),etComment.getEditableText().toString(), userId);
+            else
+                return; //handle error
         }
     }
 
-    private void createPost(String shop, String drink, String comment) {
-        SharedPreferences sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE);
+    private void createPost(ObjectId shopId, String drink, String comment, String userId) {
         StringBuilder result = new StringBuilder();
         HttpURLConnection urlConnection = null;
-        String endpoint = "/user";
+        String endpoint = "/createmessage";
         Message newMessage = new Message();
-        newMessage.setUserId(new ObjectId(Objects.requireNonNull(sharedPreferences.getString("userID", ""))));
-//        newMessage.setShopId();
-//        newMessage.setDrinkId();
-//        newMessage.setRating();
+        newMessage.setShopId(shopId);
+        newMessage.setUserEmail(userId);
+        Log.d(TAG, "Trying to get object from shop");
+
+        newMessage.setRating(ratingBar.getNumStars());
         newMessage.setComment(comment);
         try {
             String apiUrl = (http+localIp+endpoint);
@@ -131,5 +145,48 @@ public class PostFragment extends Fragment implements View.OnClickListener{
             assert urlConnection != null;
             urlConnection.disconnect();
         }
+    }
+
+    //return shop name
+    private ObjectId getShopId(String shopname)
+    {
+        StringBuilder result = new StringBuilder();
+        HttpURLConnection urlConnection = null;
+        String endpoint = "/getShop";
+        try {
+            String apiUrl = (http+localIp+endpoint);
+            URL requestUrl = new URL(apiUrl);
+            urlConnection = (HttpURLConnection) requestUrl.openConnection();
+            urlConnection.setRequestProperty("Content-Type", "application/json; utf-8");
+            urlConnection.setRequestMethod("POST"); //get
+            urlConnection.setRequestProperty("Accept", "application/json");
+            urlConnection.setDoOutput(true);
+            Gson gson = new Gson();
+            String jsonInputString = gson.toJson(shopname);
+            //Sends to api
+            try(OutputStream os = urlConnection.getOutputStream()) {
+                byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+            //Response
+            try(BufferedReader br = new BufferedReader(
+                    new InputStreamReader(urlConnection.getInputStream(), StandardCharsets.UTF_8))) {
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    result.append(responseLine.trim());
+                }
+                Shop current = gson.fromJson(result.toString(), Shop.class);
+                if (current.getId() != null)
+                    return current.getId();
+                else
+                    return null; //handle error
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            assert urlConnection != null;
+            urlConnection.disconnect();
+        }
+        return null;
     }
 }
