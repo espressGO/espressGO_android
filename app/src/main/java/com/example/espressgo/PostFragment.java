@@ -44,7 +44,7 @@ public class PostFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "PostFragment" ;
     SharedPreferences sharedPreferences;
 
-    public final String localIp = "192.168.1.191:8080";
+    public final String localIp = "192.168.1.7:8080";
     public final String http = "http://";
 
     @Nullable
@@ -86,7 +86,7 @@ public class PostFragment extends Fragment implements View.OnClickListener{
 
             if(shopId != null && userId != null) {
                 Log.d(TAG, shopId.toString());
-                createPost(shopId,etDrink.getEditableText().toString(),etComment.getEditableText().toString(), userId);
+                createPost(shopId,etDrink.getEditableText().toString(),etShop.getEditableText().toString(),etComment.getEditableText().toString(), userId);
             }
             else {
                 Log.d(TAG, "Shop ID was null!");
@@ -96,13 +96,15 @@ public class PostFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private void createPost(ObjectId shopId, String drink, String comment, String userId) {
+    private void createPost(ObjectId shopId, String drink, String shopName, String comment, String userId) {
         StringBuilder result = new StringBuilder();
         HttpURLConnection urlConnection = null;
         String endpoint = "/createmessage";
         Message newMessage = new Message();
         newMessage.setShopId(shopId);
         newMessage.setUserEmail(userId);
+        Log.d(TAG, "SHOP: " + shopName);
+        newMessage.setShopname(shopName);
         Log.d(TAG, "Trying to get object from shop");
 
         newMessage.setRating((int)ratingBar.getRating());

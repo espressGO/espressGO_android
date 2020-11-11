@@ -59,7 +59,7 @@ public class CreateUserView extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     //CHANGE THIS VALUE TO YOUR LOCAL IP. IF USING WINDOWS, USE IPCONFIG. LINUX, USE IP A
-    public final String localIp = "192.168.1.191:8080";
+    public final String localIp = "192.168.1.7:8080";
     public final String http = "http://";
     @Override
     protected void onCreate(Bundle savedInstanceState) {

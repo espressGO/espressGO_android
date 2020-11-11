@@ -7,7 +7,7 @@ repositories {
         name = "GitHubPackages"
         url = uri("https://maven.pkg.github.com/espressGO/espressgo_models")
         credentials {
-            username = "dmurphgarrett"
+            username = ""
             password = ""
         }
     }
@@ -46,7 +46,7 @@ dependencies {
 
 
     //Custom models
-    implementation ('com.espressgo.models:espressgo_models:1.46') { //1.40
+    implementation ('com.espressgo.models:espressgo_models:1.51') { //1.40
         exclude group: 'org.springframework.boot'
     }
     implementation'com.google.code.gson:gson:2.8.5'
