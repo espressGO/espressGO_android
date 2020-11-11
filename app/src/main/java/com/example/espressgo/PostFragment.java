@@ -44,7 +44,7 @@ public class PostFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "PostFragment" ;
     SharedPreferences sharedPreferences;
 
-    public final String localIp = "192.168.1.7:8080";
+    public final String localIp = "192.168.1.191:8080";
     public final String http = "http://";
 
     @Nullable
@@ -72,20 +72,7 @@ public class PostFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        //Do everything here!
-        //Make sure etShop isn't empty, check if shop exists
-        //etDrink can be empty if it is a shop rating, but if it isn't empty check if it exists
-        //Make sure etComment isn't empty
-        //Once this is done, create a new post variable and add it to the database!
-/*        if (TextUtils.isEmpty((CharSequence) etShop)) {
-            Toast.makeText(getActivity(), "Shop is empty. Please re-enter the shop you wish to review.", Toast.LENGTH_LONG).show();
-            return;
-        }
-        else if (TextUtils.isEmpty((CharSequence) etComment)) {
-            Toast.makeText(getActivity(), "Comment is empty. Please re-enter the comment you wish to post.", Toast.LENGTH_LONG).show();
-            return;
-        }
-*/
+
         int SDK_INT = Build.VERSION.SDK_INT;
         if (SDK_INT > 8) {
 
@@ -96,11 +83,16 @@ public class PostFragment extends Fragment implements View.OnClickListener{
             ObjectId shopId = getShopId(etShop.getEditableText().toString());
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
-            Log.d(TAG, shopId.toString());
-            if(shopId != null && userId != null)
+
+            if(shopId != null && userId != null) {
+                Log.d(TAG, shopId.toString());
                 createPost(shopId,etDrink.getEditableText().toString(),etComment.getEditableText().toString(), userId);
-            else
+            }
+            else {
+                Log.d(TAG, "Shop ID was null!");
                 return; //handle error
+            }
+
         }
     }
 
@@ -113,7 +105,7 @@ public class PostFragment extends Fragment implements View.OnClickListener{
         newMessage.setUserEmail(userId);
         Log.d(TAG, "Trying to get object from shop");
 
-        newMessage.setRating(ratingBar.getNumStars());
+        newMessage.setRating((int)ratingBar.getRating());
         newMessage.setComment(comment);
         try {
             String apiUrl = (http+localIp+endpoint);
@@ -137,7 +129,6 @@ public class PostFragment extends Fragment implements View.OnClickListener{
                 while ((responseLine = br.readLine()) != null) {
                     result.append(responseLine.trim());
                 }
-                System.out.println(result.toString());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -145,6 +136,17 @@ public class PostFragment extends Fragment implements View.OnClickListener{
             assert urlConnection != null;
             urlConnection.disconnect();
         }
+        if (result != null) {
+            Log.d(TAG, "Post Created!");
+            Toast.makeText(this.getActivity(), "Post Created!", Toast.LENGTH_LONG).show();
+            etComment.setText("");
+            etDrink.setText("");
+            etShop.setText("");
+            ratingBar.setNumStars(0);
+
+        }
+
+
     }
 
     //return shop name
@@ -153,6 +155,8 @@ public class PostFragment extends Fragment implements View.OnClickListener{
         StringBuilder result = new StringBuilder();
         HttpURLConnection urlConnection = null;
         String endpoint = "/getShop";
+        Log.d(TAG, "Trying to find shop by shopname");
+        Log.d(TAG, shopname);
         try {
             String apiUrl = (http+localIp+endpoint);
             URL requestUrl = new URL(apiUrl);
@@ -176,7 +180,7 @@ public class PostFragment extends Fragment implements View.OnClickListener{
                     result.append(responseLine.trim());
                 }
                 Shop current = gson.fromJson(result.toString(), Shop.class);
-                if (current.getId() != null)
+                if (current != null)
                     return current.getId();
                 else
                     return null; //handle error

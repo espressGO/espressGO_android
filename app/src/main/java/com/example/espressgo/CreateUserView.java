@@ -1,5 +1,7 @@
 package com.example.espressgo;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 //import android.graphics.Color;
 
@@ -49,15 +51,15 @@ import models.User;
 
 public class CreateUserView extends AppCompatActivity {
     private static final String TAG = "CreateUserView" ;
-    EditText etEmail, etPassword1, etPassword2;
-    TextView tvUsername, tvPassword1, tvPassword2;
+    EditText etEmail, etPassword1, etPassword2, etDisplay;
+    TextView tvUsername, tvPassword1, tvPassword2, tvDisplay;
     Button createUserButton;
 
     //create account in firebase
     private FirebaseAuth mAuth;
 
     //CHANGE THIS VALUE TO YOUR LOCAL IP. IF USING WINDOWS, USE IPCONFIG. LINUX, USE IP A
-    public final String localIp = "192.168.1.7:8080";
+    public final String localIp = "192.168.1.191:8080";
     public final String http = "http://";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +70,11 @@ public class CreateUserView extends AppCompatActivity {
         tvUsername = (TextView) findViewById(R.id.tvUsername);
         tvPassword1 = (TextView) findViewById(R.id.tvPassword1);
         tvPassword2 = (TextView) findViewById(R.id.tvPassword2);
-
+        tvDisplay = (TextView) findViewById(R.id.tvDisplay);
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPassword1 = (EditText) findViewById(R.id.etPassword1);
         etPassword2 = (EditText) findViewById(R.id.etPassword2);
+        etDisplay = (EditText) findViewById(R.id.etDisplay);
         createUserButton = (Button) findViewById(R.id.createUserButton);
         createUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,8 +86,8 @@ public class CreateUserView extends AppCompatActivity {
                     return;
                 }
                 boolean goodPassword = verifyPassword(etPassword1.getEditableText().toString(),etPassword2.getEditableText().toString());
-                if(goodPassword ) {
-                    createUser(etEmail.getEditableText().toString(), "", etPassword1.getEditableText().toString());
+                if(goodPassword) {
+                    createUser(etEmail.getEditableText().toString(), etDisplay.getEditableText().toString(), etPassword1.getEditableText().toString());
                     createActivity();
                 }
 
@@ -131,7 +134,7 @@ public class CreateUserView extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             User newUser = new User();
                             newUser.setDisplayName(displayName);
-                            newUser.email = email;
+                            newUser.setEmail(email);
                             saveUser(newUser);
                             updateUI(user);
                         } else {
@@ -149,13 +152,13 @@ public class CreateUserView extends AppCompatActivity {
         StringBuilder result = new StringBuilder();
         HttpURLConnection urlConnection = null;
         String endpoint = "/user";
-
+        Log.d(TAG,"Trying to add a new user to the database");
         try {
             String apiUrl = (http+localIp+endpoint);
             URL requestUrl = new URL(apiUrl);
             urlConnection = (HttpURLConnection) requestUrl.openConnection();
             urlConnection.setRequestProperty("Content-Type", "application/json; utf-8");
-            urlConnection.setRequestMethod("POST"); //get
+            urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Accept", "application/json");
             urlConnection.setDoOutput(true);
             Gson gson = new Gson();
@@ -169,13 +172,10 @@ public class CreateUserView extends AppCompatActivity {
             //Response
             try(BufferedReader br = new BufferedReader(
                     new InputStreamReader(urlConnection.getInputStream(), "utf-8"))) {
-                StringBuilder response = new StringBuilder();
                 String responseLine = null;
                 while ((responseLine = br.readLine()) != null) {
-                    response.append(responseLine.trim());
+                    result.append(responseLine.trim());
                 }
-                System.out.println(response.toString());
-
             }
         } catch (Exception e) {
             Log.d(TAG,"Catching an error here");
@@ -183,8 +183,19 @@ public class CreateUserView extends AppCompatActivity {
         } finally {
             urlConnection.disconnect();
         }
+        Log.d(TAG, "RESULT:");
         Log.d(TAG, result.toString());
+        Gson gson = new Gson();
+        User current = gson.fromJson(result.toString(), User.class);
+        SharedPreferences sharedPreferences = getSharedPreferences("espressGO", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("jsonUser",result.toString());
 
+        editor.putString("email",current.getEmail());
+        editor.putString("userID", current.getId().toString());
+        Log.d(TAG,current.getEmail());
+        Log.d(TAG, current.getId().toString());
+        editor.apply();
 
     }
 
