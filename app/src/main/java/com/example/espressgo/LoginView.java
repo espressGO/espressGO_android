@@ -47,7 +47,7 @@ public class LoginView extends AppCompatActivity{
 
     private FirebaseAuth mAuth;
 
-    public final String localIp = "192.168.1.191:8080";
+    public final String localIp = "192.168.1.7:8080";
     public final String http = "http://";
 
     @Override
