@@ -8,7 +8,7 @@ repositories {
         url = uri("https://maven.pkg.github.com/espressGO/espressgo_models")
         credentials {
             username = "dmurphgarrett"
-            password = "4edc89e33fb74e370a63ba5d34903ba8d08e6c0b"
+            password = ""
         }
     }
 }
