@@ -26,7 +26,7 @@ public class FeedListAdapter extends BaseAdapter
 
     @Override
     public Object getItem(int position) {
-        return listData.get(position);
+        return null;
     }
 
     @Override

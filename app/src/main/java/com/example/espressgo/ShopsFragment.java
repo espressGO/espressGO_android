@@ -31,7 +31,7 @@ import models.Shop;
 public class ShopsFragment extends Fragment {
     TextView tvTitle;
     ListView drinkTypesListView;
-    public final String localIp = "192.168.1.191:8080";
+    public final String localIp = "192.168.1.7:8080";
     private static final String TAG = "ShopsFragment" ;
 
     @Nullable
@@ -73,7 +73,7 @@ public class ShopsFragment extends Fragment {
             String apiUrl = (http+localIp+endpoint);
             URL requestUrl = new URL(apiUrl);
             urlConnection = (HttpURLConnection) requestUrl.openConnection();
-            urlConnection.setRequestMethod("POST"); //get
+            urlConnection.setRequestMethod("GET"); //get
             urlConnection.setRequestProperty("Accept", "application/json");
             urlConnection.setDoOutput(true);
             Gson gson = new Gson();

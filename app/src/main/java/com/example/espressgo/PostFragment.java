@@ -47,7 +47,7 @@ public class PostFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "PostFragment" ;
     SharedPreferences sharedPreferences;
 
-    public final String localIp = "192.168.1.191:8080";
+    public final String localIp = "192.168.1.7:8080";
     public final String http = "http://";
 
     @Nullable
@@ -131,6 +131,8 @@ public class PostFragment extends Fragment implements View.OnClickListener{
         String endpoint = "/createmessage";
         Message newMessage = new Message();
         newMessage.setShopId(shopId);
+        Log.d(TAG, "SHOP NAME : " + shop.getShopname());
+        newMessage.setShopname(shop.getShopname());
         newMessage.setUserEmail(userId);
         if (drink != "" )
             newMessage.setDrinkname(drink);
