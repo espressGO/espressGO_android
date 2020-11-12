@@ -76,21 +76,23 @@ public class PostFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
 
+        SharedPreferences preferences = getActivity().getSharedPreferences("espressGO", Context.MODE_PRIVATE);
+        String userId = preferences.getString("email", "");
+        Log.d(TAG, userId);
+
         int SDK_INT = Build.VERSION.SDK_INT;
         if (SDK_INT > 8) {
 
-            SharedPreferences preferences = getActivity().getSharedPreferences("espressGO", Context.MODE_PRIVATE);
-            String userId = preferences.getString("email", "");
-            Log.d(TAG, userId);
-
-            Shop shop = getShopId(etShop.getEditableText().toString());
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
+            Shop shop = getShopId(etShop.getEditableText().toString());
+
             if(shop != null && userId != null) {
+
                 if (etDrink.getEditableText().toString().equals("")) {
                     Log.d(TAG, shop.getId().toString());
-                    createPost(shop.getId(),etDrink.getEditableText().toString(),etComment.getEditableText().toString(), userId, shop);
+                    createPost(shop.getId(),etShop.getEditableText().toString(), etDrink.getEditableText().toString(),etComment.getEditableText().toString(), userId, shop);
                 }
                 else {
                     ArrayList<Drink> drinks = shop.getDrinks();
@@ -104,7 +106,7 @@ public class PostFragment extends Fragment implements View.OnClickListener{
                     }
                     if (found) {
                         Log.d(TAG, shop.getId().toString());
-                        createPost(shop.getId(),etDrink.getEditableText().toString(),etComment.getEditableText().toString(), userId, shop);
+                        createPost(shop.getId(),etShop.getEditableText().toString(),etDrink.getEditableText().toString(),etComment.getEditableText().toString(), userId, shop);
                     }
                     else {
                         Toast.makeText(this.getActivity(), "Drink Not Found", Toast.LENGTH_LONG).show();
@@ -123,19 +125,21 @@ public class PostFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private void createPost(ObjectId shopId, String drink, String comment, String userId, Shop shop) {
+    private void createPost(ObjectId shopId, String shopname, String drink, String comment, String userId, Shop shop) {
 
-
+        Log.d(TAG, "SENDING SHOP NAME: " + shop.getShopname() + " TO THE API");
         StringBuilder result = new StringBuilder();
         HttpURLConnection urlConnection = null;
         String endpoint = "/createmessage";
         Message newMessage = new Message();
+        newMessage.setShopname(shopname);
         newMessage.setShopId(shopId);
         newMessage.setUserEmail(userId);
         if (drink != "" )
             newMessage.setDrinkname(drink);
 
-        Log.d(TAG, "Trying to get object from shop");
+        Log.d(TAG, "Here is the shop name before we send " + newMessage.getShopname());
+
 
         newMessage.setRating((int)ratingBar.getRating());
         newMessage.setComment(comment);

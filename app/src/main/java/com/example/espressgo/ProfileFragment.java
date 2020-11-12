@@ -16,8 +16,11 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
 
 import java.util.Objects;
+
+import models.User;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "ProfileFragment" ;
@@ -52,8 +55,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         followingButton.setOnClickListener(this);
         tvUserEmail.setText(email);
         SharedPreferences preferences = getActivity().getSharedPreferences("espressGO", Context.MODE_PRIVATE);
-        Log.d(TAG, Objects.requireNonNull(preferences.getString("displayName", "")));
-        tvDisplay.setText(preferences.getString("displayName", ""));
+        Gson gson = new Gson();
+        User user = gson.fromJson(preferences.getString("jsonUser", ""),User.class);
+        if (user == null) {
+            tvDisplay.setText("TestUser");
+        }
+        else {
+            tvDisplay.setText(user.getDisplayName()); //HERE
+        }
+
 
 
 

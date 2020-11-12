@@ -59,7 +59,7 @@ public class CreateUserView extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     //CHANGE THIS VALUE TO YOUR LOCAL IP. IF USING WINDOWS, USE IPCONFIG. LINUX, USE IP A
-    public final String localIp = "192.168.1.7:8080";
+    public final String localIp = "192.168.1.191:8080";
     public final String http = "http://";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +116,7 @@ public class CreateUserView extends AppCompatActivity {
         }
         else if (pass1.length() < 7 || pass1.length() >  14)
         {
-            Toast toast = Toast.makeText(getApplicationContext(), "Password must be between 8-13 characters", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getApplicationContext(), "Password must be between 7-14 characters", Toast.LENGTH_SHORT);
             toast.show();
             return false;
         }
@@ -197,17 +197,17 @@ public class CreateUserView extends AppCompatActivity {
         }
         Log.d(TAG, "RESULT:");
         Log.d(TAG, result.toString());
-        Gson gson = new Gson();
-        User current = gson.fromJson(result.toString(), User.class);
-        SharedPreferences sharedPreferences = getSharedPreferences("espressGO", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("jsonUser",result.toString());
-        editor.putString("displayName",current.getDisplayName());
-        editor.putString("email",current.getEmail());
-        editor.putString("userID", current.getId().toString());
-        Log.d(TAG,current.getEmail());
-        Log.d(TAG, current.getId().toString());
-        editor.apply();
+//        Gson gson = new Gson();
+//        User current = gson.fromJson(result.toString(), User.class);
+//        SharedPreferences sharedPreferences = getSharedPreferences("espressGO", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString("jsonUser",result.toString());
+//        editor.putString("displayName",current.getDisplayName());
+//        editor.putString("email",current.getEmail());
+//        editor.putString("userID", current.getId().toString());
+//        Log.d(TAG,current.getEmail());
+//        Log.d(TAG, current.getId().toString());
+//        editor.apply();
 
     }
 
@@ -216,23 +216,26 @@ public class CreateUserView extends AppCompatActivity {
         startActivity(home);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        int SDK_INT = android.os.Build.VERSION.SDK_INT;
-        if (SDK_INT > 8)
-        {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                    .permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            //your codes here
-
-        }
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null)
-            updateUI(currentUser);
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//
+//        // Check if user is signed in (non-null) and update UI accordingly.
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        if(currentUser != null) {
+//            updateUI(currentUser);
+//            int SDK_INT = android.os.Build.VERSION.SDK_INT;
+//            if (SDK_INT > 8)
+//            {
+//                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+//                        .permitAll().build();
+//                StrictMode.setThreadPolicy(policy);
+//                saveUser(currentUser);
+//
+//            }
+//        }
+//
+//    }
 
     public void updateUI(FirebaseUser user)
     {

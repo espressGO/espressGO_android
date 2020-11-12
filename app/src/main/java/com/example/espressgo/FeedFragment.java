@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -26,8 +27,10 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import models.Message;
+import models.Shop;
 
 public class FeedFragment extends Fragment {
     ListView feedListView;
@@ -101,7 +104,7 @@ public class FeedFragment extends Fragment {
                     result.append(responseLine.trim());
                 }
                 Log.d(TAG, result.toString());
-                ArrayList<Message> messages = (ArrayList<Message>) gson.fromJson(result.toString(), ArrayList.class);
+                ArrayList<Message> messages = gson.fromJson(result.toString(), new TypeToken<List<Message>>(){}.getType());
                 return messages;
             }
         } catch (Exception e) {

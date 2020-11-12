@@ -38,6 +38,7 @@ public class ShopFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        tvShopName = requireView().findViewById(R.id.tvShopName);
         ArrayList<DrinkListItem> menu = getListData();
         listViewMenu = requireView().findViewById(R.id.listViewMenu);
         listViewMenu.setAdapter(new DrinksListAdapter(this.getActivity(),menu));
@@ -52,6 +53,7 @@ public class ShopFragment extends Fragment {
         editor.apply();
         Gson gson = new Gson();
         Shop shop = gson.fromJson(shopJson,Shop.class);
+        tvShopName.setText(shop.getShopname());
         ArrayList<Drink> drinks = shop.getDrinks();
         for (Drink drink : drinks) {
             DrinkListItem item = new DrinkListItem();

@@ -47,7 +47,7 @@ public class LoginView extends AppCompatActivity{
 
     private FirebaseAuth mAuth;
 
-    public final String localIp = "192.168.1.7:8080";
+    public final String localIp = "192.168.1.191:8080";
     public final String http = "http://";
 
     @Override
@@ -153,11 +153,14 @@ public class LoginView extends AppCompatActivity{
         sharedPreferences = getSharedPreferences("espressGO", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
         editor.putString("jsonUser",result.toString());
-        editor.putString("displayName",current.getDisplayName());
-        editor.putString("email",current.getEmail());
-        editor.putString("userID", current.getId().toString());
-        Log.d(TAG,current.getEmail());
-        Log.d(TAG, current.getId().toString());
+        if (current != null) {
+            editor.putString("displayName",current.getDisplayName());
+            editor.putString("email",current.getEmail());
+            editor.putString("userID", current.getId().toString());
+        }
+
+//        Log.d(TAG,current.getEmail());
+//        Log.d(TAG, current.getId().toString());
         editor.apply();
 
     }
