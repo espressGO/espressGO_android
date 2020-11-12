@@ -30,8 +30,11 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Objects;
 
+import models.Drink;
 import models.Message;
 import models.Shop;
 import models.User;
@@ -80,29 +83,58 @@ public class PostFragment extends Fragment implements View.OnClickListener{
             String userId = preferences.getString("email", "");
             Log.d(TAG, userId);
 
-            ObjectId shopId = getShopId(etShop.getEditableText().toString());
+            Shop shop = getShopId(etShop.getEditableText().toString());
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
-            if(shopId != null && userId != null) {
-                Log.d(TAG, shopId.toString());
-                createPost(shopId,etDrink.getEditableText().toString(),etComment.getEditableText().toString(), userId);
+            if(shop != null && userId != null) {
+                if (etDrink.getEditableText().toString().equals("")) {
+                    Log.d(TAG, shop.getId().toString());
+                    createPost(shop.getId(),etDrink.getEditableText().toString(),etComment.getEditableText().toString(), userId, shop);
+                }
+                else {
+                    ArrayList<Drink> drinks = shop.getDrinks();
+                    Iterator<Drink> drinkIterator = drinks.iterator();
+                    boolean found = false;
+                    while(drinkIterator.hasNext()) {
+                        Drink drink = drinkIterator.next();
+                        if (drink.getDrink_name() != null && drink.getDrink_name().equals(etDrink.getEditableText().toString())) {
+                            found = true;
+                        }
+                    }
+                    if (found) {
+                        Log.d(TAG, shop.getId().toString());
+                        createPost(shop.getId(),etDrink.getEditableText().toString(),etComment.getEditableText().toString(), userId, shop);
+                    }
+                    else {
+                        Toast.makeText(this.getActivity(), "Drink Not Found", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                }
+
+
             }
             else {
                 Log.d(TAG, "Shop ID was null!");
+                Toast.makeText(this.getActivity(), "Shop Not Found", Toast.LENGTH_LONG).show();
                 return; //handle error
             }
 
         }
     }
 
-    private void createPost(ObjectId shopId, String drink, String comment, String userId) {
+    private void createPost(ObjectId shopId, String drink, String comment, String userId, Shop shop) {
+
+
         StringBuilder result = new StringBuilder();
         HttpURLConnection urlConnection = null;
         String endpoint = "/createmessage";
         Message newMessage = new Message();
         newMessage.setShopId(shopId);
         newMessage.setUserEmail(userId);
+        if (drink != "" )
+            newMessage.setDrinkname(drink);
+
         Log.d(TAG, "Trying to get object from shop");
 
         newMessage.setRating((int)ratingBar.getRating());
@@ -150,7 +182,7 @@ public class PostFragment extends Fragment implements View.OnClickListener{
     }
 
     //return shop name
-    private ObjectId getShopId(String shopname)
+    private Shop getShopId(String shopname)
     {
         StringBuilder result = new StringBuilder();
         HttpURLConnection urlConnection = null;
@@ -179,9 +211,10 @@ public class PostFragment extends Fragment implements View.OnClickListener{
                 while ((responseLine = br.readLine()) != null) {
                     result.append(responseLine.trim());
                 }
+                Log.d(TAG, "Shop: " + result.toString());
                 Shop current = gson.fromJson(result.toString(), Shop.class);
                 if (current != null)
-                    return current.getId();
+                    return current;
                 else
                     return null; //handle error
             }

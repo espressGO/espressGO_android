@@ -153,16 +153,13 @@ public class LoginView extends AppCompatActivity{
         sharedPreferences = getSharedPreferences("espressGO", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
         editor.putString("jsonUser",result.toString());
-
+        editor.putString("displayName",current.getDisplayName());
         editor.putString("email",current.getEmail());
         editor.putString("userID", current.getId().toString());
         Log.d(TAG,current.getEmail());
         Log.d(TAG, current.getId().toString());
         editor.apply();
-        /*
-        *   SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        *   String userName = sharedPref.getString("userName", defaultValue)
-        * */
+
     }
 
     public void checkSignIn(String email, String password)

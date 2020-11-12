@@ -7,6 +7,17 @@
     android:background="@color/colorPrimary">
 
     <TextView
+        android:id="@+id/tvDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="20dp"
+        android:text="INSERT USER Display name"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvName" />
+
+    <TextView
         android:id="@+id/tvProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,8 +32,8 @@
         android:id="@+id/tvEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="176dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginStart="168dp"
+        android:layout_marginTop="152dp"
         android:text="Email:"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,8 +43,8 @@
         android:id="@+id/tvUserEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="112dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="28dp"
         android:text="INSERT USER EMAIL"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,5 +71,16 @@
         android:text="Following"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/followersButton" />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="139dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="36dp"
+        android:text="Display Name:"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvProfile" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

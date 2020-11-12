@@ -1,6 +1,9 @@
 package com.example.espressgo;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +17,12 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
+
 public class ProfileFragment extends Fragment implements View.OnClickListener{
+    private static final String TAG = "ProfileFragment" ;
     FirebaseUser user;
-    TextView tvProfile, tvEmail, tvUserEmail;
+    TextView tvProfile, tvEmail, tvUserEmail, tvName, tvDisplay;
     Button followersButton, followingButton;
 
     @Nullable
@@ -38,11 +44,17 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         tvProfile = requireView().findViewById(R.id.tvProfile);
         tvEmail = requireView().findViewById(R.id.tvEmail);
         tvUserEmail = requireView().findViewById(R.id.tvUserEmail);
+        tvName = requireView().findViewById(R.id.tvName);
+        tvDisplay = requireView().findViewById(R.id.tvDisplay);
         followersButton = requireView().findViewById(R.id.followersButton);
         followersButton.setOnClickListener(this);
         followingButton = requireView().findViewById(R.id.followingButton);
         followingButton.setOnClickListener(this);
         tvUserEmail.setText(email);
+        SharedPreferences preferences = getActivity().getSharedPreferences("espressGO", Context.MODE_PRIVATE);
+        Log.d(TAG, Objects.requireNonNull(preferences.getString("displayName", "")));
+        tvDisplay.setText(preferences.getString("displayName", ""));
+
 
 
     }

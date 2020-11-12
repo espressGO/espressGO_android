@@ -69,6 +69,9 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
             case R.id.nav_drinks:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DrinksFragment()).commit();
                 break;
+            case R.id.nav_shops:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ShopsFragment()).commit();
+                break;
             case R.id.nav_logout:
                 logOut();
                 break;

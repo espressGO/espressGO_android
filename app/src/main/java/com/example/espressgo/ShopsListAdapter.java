@@ -10,11 +10,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class SearchListAdapter extends BaseAdapter
+public class ShopsListAdapter extends BaseAdapter
 {
-    ArrayList<SearchListItem> listData;
+    ArrayList<ShopsListItem> listData;
     private LayoutInflater layoutInflater;
-    public SearchListAdapter(Context aContext, ArrayList<SearchListItem> listData) {
+    public ShopsListAdapter(Context aContext, ArrayList<ShopsListItem> listData) {
         this.listData = listData;
         layoutInflater = LayoutInflater.from(aContext);
     }
@@ -39,20 +39,17 @@ public class SearchListAdapter extends BaseAdapter
     public View getView(int position, View v, ViewGroup vg) {
         ViewHolder holder;
         if (v == null) {
-            v = layoutInflater.inflate(R.layout.search_row, null);
+            v = layoutInflater.inflate(R.layout.follow_row, null);
             holder = new ViewHolder();
-            holder.uTitle = (TextView) v.findViewById(R.id.tvEmailOrShop);
-            holder.uNext = (TextView) v.findViewById(R.id.tvNext);
+            holder.uDisplayName = (TextView) v.findViewById(R.id.tvEmailOrShop);
             v.setTag(holder);
         } else {
             holder = (ViewHolder) v.getTag();
         }
-        holder.uTitle.setText(listData.get(position).getTitle());
-        holder.uNext.setText(listData.get(position).userOrShop());
+        holder.uDisplayName.setText(listData.get(position).getName());
         return v;
     }
     static class ViewHolder {
-        TextView uTitle;
-        TextView uNext;
+        TextView uDisplayName;
     }
 }

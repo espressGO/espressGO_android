@@ -133,9 +133,21 @@ public class CreateUserView extends AppCompatActivity {
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             User newUser = new User();
+                            Log.d(TAG,"User's Display Name: " + displayName);
                             newUser.setDisplayName(displayName);
                             newUser.setEmail(email);
-                            saveUser(newUser);
+                            int SDK_INT = android.os.Build.VERSION.SDK_INT;
+                            if (SDK_INT > 8)
+                            {
+                                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                                        .permitAll().build();
+                                StrictMode.setThreadPolicy(policy);
+                                //your codes here
+                                saveUser(newUser);
+
+                            }
+
+
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -190,7 +202,7 @@ public class CreateUserView extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("espressGO", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("jsonUser",result.toString());
-
+        editor.putString("displayName",current.getDisplayName());
         editor.putString("email",current.getEmail());
         editor.putString("userID", current.getId().toString());
         Log.d(TAG,current.getEmail());
@@ -200,7 +212,7 @@ public class CreateUserView extends AppCompatActivity {
     }
 
     public void createActivity() {
-        Intent home = new Intent(this, HomeScreen.class);
+        Intent home = new Intent(this, OpeningScreen.class);
         startActivity(home);
     }
 

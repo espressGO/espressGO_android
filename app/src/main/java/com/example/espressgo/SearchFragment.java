@@ -1,5 +1,7 @@
 package com.example.espressgo;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -41,12 +43,18 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         //make sure search bar isn't empty, then do the search
-        if (TextUtils.isEmpty(etSearch.toString())) {
+        if (TextUtils.isEmpty(etSearch.getEditableText().toString())) {
             Toast.makeText(getActivity(), "Search is empty. Please enter what you wish to search.", Toast.LENGTH_LONG).show();
             return;
         }
         //do search here, then move to the search_results fragment
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("espressGO", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("search", etSearch.getEditableText().toString());
+        editor.apply();
+
         getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchResultsFragment()).commit();
 
     }
+
 }

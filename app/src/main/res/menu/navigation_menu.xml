@@ -23,6 +23,10 @@
             android:id="@+id/nav_drinks"
             android:title="Drink Types" />
 
+        <item
+            android:id="@+id/nav_shops"
+            android:title="Shops" />
+
     </group>
 
 
